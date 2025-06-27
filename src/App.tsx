@@ -4,11 +4,7 @@ import TripResultPanel from "./components/TripResultPanel";
 import TripInputPanel from "./components/TripInputPanel";
 import type { Person } from "./types/person.type";
 import type { Trip } from "./types/trip.type";
-import type {
-  Calculated,
-  CalculatedRow,
-  CalculatedRowRaw,
-} from "./types/calculated.type";
+import type { Calculated, CalculatedRowRaw } from "./types/calculated.type";
 
 export default function TravelPlanner() {
   const [people, setPeople] = useState<Person[]>([
@@ -78,7 +74,7 @@ export default function TravelPlanner() {
     driverIndex: number | null
   ) => {
     const n = people.length;
-    const driver = driverIndex !== null ? people[driverIndex] : null;
+    // const driver = driverIndex !== null ? people[driverIndex] : null;
     const matrix: number[][] = Array.from({ length: n }, () =>
       Array(n).fill(0)
     );
@@ -108,7 +104,7 @@ export default function TravelPlanner() {
     distribute(
       foodAmounts,
       foodPerPerson,
-      foodAmounts.map((amt, idx) => idx)
+      foodAmounts.map((_, idx) => idx)
     );
 
     const transportAmounts = people.map((p) => p.transport);
@@ -118,7 +114,7 @@ export default function TravelPlanner() {
     distribute(
       transportAmounts,
       transportPerPerson,
-      transportAmounts.map((amt, idx) => idx)
+      transportAmounts.map((_, idx) => idx)
     );
 
     const stayAmounts = people.map((p) => p.stay);
@@ -128,7 +124,7 @@ export default function TravelPlanner() {
     distribute(
       stayAmounts,
       stayPerPerson,
-      stayAmounts.map((amt, idx) => idx)
+      stayAmounts.map((_, idx) => idx)
     );
 
     const etcAmounts = people.map((p) => p.etc);
@@ -138,7 +134,7 @@ export default function TravelPlanner() {
     distribute(
       etcAmounts,
       etcPerPerson,
-      etcAmounts.map((amt, idx) => idx)
+      etcAmounts.map((_, idx) => idx)
     );
 
     // 기름값: 운전자 제외 n-1분의 1
@@ -155,7 +151,7 @@ export default function TravelPlanner() {
       distribute(
         fuelAmounts,
         fuelPerPersonArr,
-        fuelAmounts.map((amt, idx) => idx)
+        fuelAmounts.map((_, idx) => idx)
       );
     }
 
@@ -214,14 +210,6 @@ export default function TravelPlanner() {
     const totalSum = rows.reduce((acc, row) => acc + row.total, 0);
     const perPersonCost = totalSum / totalPeople;
 
-    const processedRows: CalculatedRow[] = rows.map((r) => ({
-      ...r,
-      fuel: r.fuel, // fuel 값을 추가
-      fuelShare: r.fuelShare.toFixed(0),
-      total: r.total.toFixed(0),
-    }));
-
-    // 새로운 정산 매트릭스 계산
     const settlementMatrix = calculateSettlementMatrixByItem(
       people,
       trip,
