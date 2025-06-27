@@ -1,5 +1,5 @@
 // TravelPlanner.tsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import TripResultPanel from "./components/TripResultPanel";
 import TripInputPanel from "./components/TripInputPanel";
 import type { Person } from "./types/person.type";
@@ -7,6 +7,91 @@ import type { Trip } from "./types/trip.type";
 import type { Calculated, CalculatedRowRaw } from "./types/calculated.type";
 
 export default function TravelPlanner() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  // 모바일 감지
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  // Buy Me a Coffee 버튼 위치 조정
+  useEffect(() => {
+    const style = document.createElement("style");
+    style.textContent = `
+      [data-name="bmc-button"] {
+        position: fixed !important;
+        top: 20px !important;
+        right: 20px !important;
+        z-index: 1000 !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
+
+  // Buy Me a Coffee 버튼 직접 생성
+  useEffect(() => {
+    const createButton = () => {
+      const existingButton = document.querySelector('[data-name="bmc-button"]');
+      if (existingButton) return;
+
+      const button = document.createElement("a");
+      button.setAttribute("data-name", "bmc-button");
+      button.setAttribute("data-slug", "dnswlrsla");
+      button.setAttribute("data-color", "#070a03");
+      button.setAttribute("data-emoji", "💵");
+      button.setAttribute("data-font", "Comic");
+      button.setAttribute("data-text", "Buy me a donate");
+      button.setAttribute("data-outline-color", "#ffffff");
+      button.setAttribute("data-font-color", "#ffffff");
+      button.setAttribute("data-coffee-color", "#FFDD00");
+      button.href = "https://www.buymeacoffee.com/dnswlrsla";
+      button.target = "_blank";
+      button.rel = "noopener noreferrer";
+      button.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        background: #070a03;
+        color: #ffffff;
+        padding: 10px 15px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-family: Comic Sans MS, cursive;
+        font-size: 14px;
+        border: 2px solid #ffffff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      `;
+      button.innerHTML = "💵 Buy me a coffee";
+
+      document.body.appendChild(button);
+    };
+
+    // 페이지 로드 후 버튼 생성
+    setTimeout(createButton, 1000);
+
+    return () => {
+      const button = document.querySelector('[data-name="bmc-button"]');
+      if (button) {
+        button.remove();
+      }
+    };
+  }, []);
+
   const [people, setPeople] = useState<Person[]>([
     { name: "", food: 0, transport: 0, stay: 0, fuel: 0, etc: 0 },
   ]);
@@ -233,7 +318,11 @@ export default function TravelPlanner() {
   };
 
   return (
-    <div className="flex max-w-[1200px] mx-auto px-8 py-6 gap-6 justify-center">
+    <div
+      className={`flex max-w-[1200px] mx-auto px-8 py-6 gap-6 justify-center ${
+        isMobile ? "flex-col" : "flex"
+      }`}
+    >
       <TripInputPanel
         trip={trip}
         people={people}
