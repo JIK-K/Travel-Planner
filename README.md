@@ -1,69 +1,22 @@
-# React + TypeScript + Vite
+# 여행 비용 정산기 (Travel Planner)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+여행 중 발생한 모든 비용을 공정하게 분배하고, 각자 얼마를 내야 하는지 자동으로 계산해주는 웹 애플리케이션입니다.
 
-Currently, two official plugins are available:
+## 주요 기능
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 여행 정보(출발일, 도착일, 목적지, 숙소, 이동수단) 입력
+- 인원별로 식비, 교통비, 숙소비, 기름값, 기타 항목별 지출 입력
+- 자차 이동 시 운전자 지정 및 기름값 자동 분배
+- 각 항목별로 n분의 1(기름값은 운전자 제외 n-1분의 1)로 분배하여, 각자 얼마를 누구에게 송금해야 하는지 표로 안내
+- 입력 즉시 실시간 결과 반영, 보기 쉬운 표와 금액 표시(쉼표 포함)
 
-## Expanding the ESLint configuration
+## 사용 방법
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+1. 여행 기본 정보를 입력합니다.
+2. 여행 인원을 추가하고, 각 인원의 지출 내역을 입력합니다.
+3. 이동수단이 자차라면 운전자를 지정하고, 각 인원의 기름값을 입력합니다.
+4. "계산하기" 버튼을 누르면, 각 인원의 실제 지출과 정산 내역이 표로 표시됩니다.
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+문의 및 피드백은 이메일로 남겨주세요!
