@@ -1,5 +1,5 @@
 # 여행 비용 정산기 (Travel Planner)
-
+[여행N빵](https://jik-k.github.io/Travel-Planner/)
 여행 중 발생한 모든 비용을 공정하게 분배하고, 각자 얼마를 내야 하는지 자동으로 계산해주는 웹 애플리케이션입니다.
 
 ## 주요 기능
